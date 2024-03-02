@@ -1,0 +1,128 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3" style="background-color: cadetblue;height: 90vh;">
+      <div>
+        <mat-card class="m-3" >
+          <mat-card-content>
+            <form [formGroup]="todoForm">
+              <mat-form-field appearance="outline">
+                <mat-label> Write Task  </mat-label>
+                <input matInput placeholder="task title" formControlName="item">
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-hint>task input</mat-hint>
+              </mat-form-field>
+              @if(!isEnabled){
+                <button  (click)="addTask()" mat-raised-button color="primary" [disabled]="!todoForm.valid">Add</button>
+              }
+              @if(isEnabled){
+                <button  (click)="updateTask()" mat-raised-button  color="primary" [disabled]="!todoForm.valid">Update</button>
+              }
+            </form>
+          </mat-card-content>
+
+        </mat-card>
+      </div>
+
+    </div>
+    <div class="col-md-9">
+      <div class="cdkDropList">
+        <div class="row">
+
+          <div class="col-md-4">
+            <div class="example-container">
+              <h2>To do
+                @if(tasks.length >0){
+                  <span>- {{tasks.length}}-</span>
+                }
+              </h2>
+
+              <div
+                cdkDropList
+                #todoList1="cdkDropList"
+                [cdkDropListData]="tasks"
+                [cdkDropListConnectedTo]="[todoList2,todoList3]"
+                class="example-list"
+                (cdkDropListDropped)="drop($event)">
+                @for (item of tasks; track $index) {
+                  <div class="example-box" cdkDrag>{{item.Title}}
+                  <div class="box">
+                    <button (click)="deleteTask($index)" mat-icon-button color="warn">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button (click)="OnEditTask(item,$index)" mat-icon-button color="warn">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-md-4">
+            <div class="example-container">
+              <h2>In Progress
+                @if(inprogress.length >0){
+                  <span>- {{inprogress.length}}-</span>
+                }
+              </h2>
+
+              <div
+                cdkDropList
+                #todoList2="cdkDropList"
+                [cdkDropListData]="inprogress"
+                [cdkDropListConnectedTo]="[todoList3]"
+                class="example-list"
+                (cdkDropListDropped)="drop($event)">
+                @for (item of inprogress; track $index) {
+                  <div class="example-box" cdkDrag>{{item.Title}}
+                  <div class="box">
+                    <button (click)="deleteInprogressTask($index)" mat-icon-button color="warn">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-4">
+            <div class="example-container">
+              <h2>Done
+                @if(done.length >0){
+                  <span>- {{done.length}}-</span>
+                }
+              </h2>
+
+              <div
+                cdkDropList
+                #todoList3="cdkDropList"
+                [cdkDropListData]="done"
+                [cdkDropListConnectedTo]="[todoList1]"
+                class="example-list"
+                (cdkDropListDropped)="drop($event)">
+                @for (item of done; track $index) {
+                  <div class="example-box" cdkDrag>{{item.Title}}
+                  <div class="box">
+                    <button (click)="deleteDoneTask($index)" mat-icon-button color="warn">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button  mat-icon-button color="accent">
+                      <mat-icon style="-webkit-text-fill-color: green;">check_circle</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
